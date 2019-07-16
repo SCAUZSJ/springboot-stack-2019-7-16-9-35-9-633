@@ -43,22 +43,17 @@ public class CompanyController {
                                  @RequestParam(required = false) String page ,
                                  @RequestParam(required = false) String pageSize) {
         List<Company> result = convertMapToList();
-//        if(gender!=null){
-//            result = result.stream().filter((obj)->{
-//                return obj.getGender().equals(gender);
-//            }).collect(Collectors.toList());
-//        }
-//        if(page!=null&&pageSize!=null){
-//            List<Employee> employeeList = new ArrayList<>();
-//            int index=(Integer.parseInt(page)-1)*Integer.parseInt(pageSize);
-//            if(index>=result.size()){
-//                result = null;
-//            }
-//            for(int i=index;i<Math.min(index+Integer.parseInt(pageSize),result.size()-1);i++){
-//                employeeList.add((Employee) result.get(i));
-//            }
-//            result = employeeList;
-//        }
+        if(page!=null&&pageSize!=null){
+            List<Company> companyList = new ArrayList<>();
+            int index=(Integer.parseInt(page)-1)*Integer.parseInt(pageSize);
+            if(index>=result.size()){
+                result = null;
+            }
+            for(int i=index;i<Math.min(index+Integer.parseInt(pageSize),result.size()-1);i++){
+                companyList.add((Company) result.get(i));
+            }
+            result = companyList;
+        }
         return ResponseEntity.ok().body(result);
     }
     @PostMapping

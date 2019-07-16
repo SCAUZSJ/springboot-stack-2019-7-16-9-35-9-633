@@ -83,4 +83,13 @@ public class CompanyControllerTest {
         JSONObject obj = new JSONObject(content);
         Assertions.assertEquals("A",obj.get("companyName"));
     }
+
+    @Test
+    public void should_return_employees_when_paging() throws Exception {
+
+        String content = this.mockMvc.perform(get("/companies?page=2&pageSize=2")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JSONArray json = new JSONArray(content);
+        Assertions.assertEquals(2,json.length());
+        Assertions.assertEquals("C",json.getJSONObject(0).getString("companyName"));
+    }
 }
