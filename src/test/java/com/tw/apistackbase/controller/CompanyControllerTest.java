@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -41,9 +40,31 @@ public class CompanyControllerTest {
         List<Employee> employees = new ArrayList<>(
                 Arrays.asList(new Employee(10,"A",20,"male",6000),new Employee(20,"B",20,"male",8000)));
 
-        Company company =new Company("A",2, employees);
+        Company company =new Company(10,"A",2, employees);
         String objectJson = new JSONObject(company).toString();
         this.mockMvc.perform(post("/companies").contentType(MediaType.APPLICATION_JSON_UTF8).
                 content(objectJson)).andExpect(status().isCreated());
+    }
+    @Test
+    public void should_return_new_object_info_when_put_success() throws Exception {
+        List<Employee> employees = new ArrayList<>(
+                Arrays.asList(new Employee(10,"A",20,"male",6000),new Employee(20,"B",20,"male",8000)));
+
+        Company company =new Company(5,"kkk",2, employees);
+        String objectJson = new org.json.JSONObject(company).toString();
+        String content = this.mockMvc.perform(put("/companies/5").contentType(MediaType.APPLICATION_JSON_UTF8).
+                content(objectJson)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JSONObject obj = new JSONObject(content);
+        Assertions.assertEquals("kkk",obj.get("companyName"));
+    }
+    @Test
+    public void should_return_new_object_info_when_put_fail() throws Exception {
+
+        List<Employee> employees = new ArrayList<>(
+                Arrays.asList(new Employee(10,"A",20,"male",6000),new Employee(20,"B",20,"male",8000)));
+        Company company =new Company(20,"kkk",2, employees);
+        String objectJson = new org.json.JSONObject(company).toString();
+        this.mockMvc.perform(put("/companies/20").contentType(MediaType.APPLICATION_JSON_UTF8).
+                content(objectJson)).andExpect(status().isBadRequest());
     }
 }

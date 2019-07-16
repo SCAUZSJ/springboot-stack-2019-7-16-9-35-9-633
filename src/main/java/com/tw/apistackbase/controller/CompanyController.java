@@ -14,19 +14,19 @@ import java.util.logging.Logger;
 public class CompanyController {
 
     private final Logger log = Logger.getLogger(this.getClass().getName());
-    private Map<String, Company> companies = new HashMap<>();
+    private Map<Integer, Company> companies = new HashMap<>();
 
     CompanyController(){
         //init data
         List<Employee> employees = new ArrayList<>(
                 Arrays.asList(new Employee(1,"A",20,"male",6000),new Employee(2,"B",20,"male",8000)));
 
-        this.companies.put("A",new Company("A",2, employees));
-        this.companies.put("B",new Company("B",2, employees));
-        this.companies.put("C",new Company("C",2, employees));
-        this.companies.put("D",new Company("D",2, employees));
-        this.companies.put("E",new Company("E",2, employees));
-        this.companies.put("F",new Company("F",2, employees));
+        this.companies.put(1,new Company(1,"A",2, employees));
+        this.companies.put(2,new Company(2,"B",2, employees));
+        this.companies.put(3,new Company(3,"C",2, employees));
+        this.companies.put(4,new Company(4,"D",2, employees));
+        this.companies.put(5,new Company(5,"E",2, employees));
+        this.companies.put(6,new Company(6,"F",2, employees));
 
     }
 
@@ -63,8 +63,20 @@ public class CompanyController {
     }
     @PostMapping
     public ResponseEntity create(@RequestBody Company company){
-        this.companies.put(company.getCompanyName(),company);
+        this.companies.put(company.getCompanyId(),company);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/{companyId}")
+    public ResponseEntity update(@PathVariable int companyId ,@RequestBody Company company){
+
+        if(!this.companies.containsKey(companyId)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        this.companies.remove(companyId);
+        company.setCompanyId(companyId);
+        this.companies.put(companyId,company);
+        return ResponseEntity.ok().body(company);
     }
 
 }
