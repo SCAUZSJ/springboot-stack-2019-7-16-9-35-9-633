@@ -20,9 +20,10 @@ public class CompanyController {
         //init data
         List<Employee> employees = new ArrayList<>(
                 Arrays.asList(new Employee(1,"A",20,"male",6000),new Employee(2,"B",20,"male",8000)));
-
+        List<Employee> employees2 = new ArrayList<>(
+                Arrays.asList(new Employee(3,"A",20,"male",6000),new Employee(4,"B",20,"male",8000)));
         this.companies.put(1,new Company(1,"A",2, employees));
-        this.companies.put(2,new Company(2,"B",2, employees));
+        this.companies.put(2,new Company(2,"B",2, employees2));
         this.companies.put(3,new Company(3,"C",2, employees));
         this.companies.put(4,new Company(4,"D",2, employees));
         this.companies.put(5,new Company(5,"E",2, employees));
@@ -84,6 +85,10 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     public ResponseEntity getbyId(@PathVariable int companyId) {
         return ResponseEntity.ok().body(companies.get(companyId));
+    }
+    @GetMapping("/{companyId}/employees")
+    public ResponseEntity getEmployeesByCompanyId(@PathVariable int companyId){
+        return ResponseEntity.ok().body(companies.get(companyId).getEmployees());
     }
 
 }

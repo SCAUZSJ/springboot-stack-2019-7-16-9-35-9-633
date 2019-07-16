@@ -85,11 +85,19 @@ public class CompanyControllerTest {
     }
 
     @Test
-    public void should_return_employees_when_paging() throws Exception {
+    public void should_return_companies_when_paging() throws Exception {
 
         String content = this.mockMvc.perform(get("/companies?page=2&pageSize=2")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         JSONArray json = new JSONArray(content);
         Assertions.assertEquals(2,json.length());
         Assertions.assertEquals("C",json.getJSONObject(0).getString("companyName"));
+    }
+
+    @Test
+    public void should_return_employees_when_get_by_company_id() throws Exception {
+
+        String content = this.mockMvc.perform(get("/companies/2/employees")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JSONArray json = new JSONArray(content);
+        Assertions.assertEquals(4,json.getJSONObject(1).getInt("id"));
     }
 }
