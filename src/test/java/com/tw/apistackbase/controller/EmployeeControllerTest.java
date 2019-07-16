@@ -78,10 +78,24 @@ public class EmployeeControllerTest {
     public void should_return_employee_when_get_by_id() throws Exception {
 
         String content = this.mockMvc.perform(get("/employees/1")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        org.json.JSONObject obj = new org.json.JSONObject(content);
+        JSONObject obj = new JSONObject(content);
         Assertions.assertEquals("A",obj.get("name"));
     }
+    @Test
+    public void should_return_employees_when_get_by_gender() throws Exception {
 
+        String content = this.mockMvc.perform(get("/employees?gender=male")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JSONArray json = new JSONArray(content);
+        Assertions.assertEquals(2,json.length());
+    }
+    @Test
+    public void should_return_employees_when_paging() throws Exception {
+
+        String content = this.mockMvc.perform(get("/employees?page=2&pageSize=2")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JSONArray json = new JSONArray(content);
+        Assertions.assertEquals(2,json.length());
+        Assertions.assertEquals(6,json.getJSONObject(0).getInt("id"));
+    }
 
 
 
