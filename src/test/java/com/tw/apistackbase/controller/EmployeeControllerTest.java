@@ -1,6 +1,7 @@
 package com.tw.apistackbase.controller;
 
 import net.minidev.json.JSONObject;
+import net.minidev.json.JSONValue;
 import org.json.JSONArray;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -16,8 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,7 +38,7 @@ public class EmployeeControllerTest {
     }
 
     @Test
-    public void postRequestTest() throws Exception {
+    public void should_return_code_201_when_post() throws Exception {
 
         Map<String, String> map = new HashMap<>();
         map.put("id","2");
@@ -48,8 +49,31 @@ public class EmployeeControllerTest {
         String objectJson = JSONObject.toJSONString(map);
         this.mockMvc.perform(post("/employees").contentType(MediaType.APPLICATION_JSON_UTF8).
                 content(objectJson)).andExpect(status().isCreated());
+    }
 
-
+    @Test
+    public void should_return_new_object_info_when_put_success() throws Exception {
+        Map<String, String> map = new HashMap<>();
+        map.put("name","A");
+        map.put("age","20");
+        map.put("gender","male");
+        map.put("salary","8000");
+        String objectJson = JSONObject.toJSONString(map);
+        String content = this.mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON_UTF8).
+                content(objectJson)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JSONObject obj = (JSONObject) JSONValue.parse(content);
+        Assertions.assertEquals(8000,obj.get("salary"));
+    }
+    @Test
+    public void should_return_new_object_info_when_put_fail() throws Exception {
+        Map<String, String> map = new HashMap<>();
+        map.put("name","C");
+        map.put("age","20");
+        map.put("gender","male");
+        map.put("salary","6000");
+        String objectJson = JSONObject.toJSONString(map);
+        this.mockMvc.perform(put("/employees/3").contentType(MediaType.APPLICATION_JSON_UTF8).
+                content(objectJson)).andExpect(status().isBadRequest());
     }
 
 }

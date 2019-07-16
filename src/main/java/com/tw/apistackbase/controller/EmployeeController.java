@@ -16,9 +16,13 @@ public class EmployeeController {
     private final Logger log = Logger.getLogger(this.getClass().getName());
     private Map<Integer,Employee> employees = new HashMap<>();
 
+    EmployeeController(){
+        //init data
+        this.employees.put(1,new Employee(1,"A",20,"male",6000));
+    }
+
     @GetMapping
     public ResponseEntity getAll() {
-        this.employees.put(1,new Employee(1,"A",20,"male",6000));
         return ResponseEntity.ok().body(employees.values().toArray());
     }
 
@@ -26,5 +30,17 @@ public class EmployeeController {
     public ResponseEntity create(@RequestBody Employee employee){
         this.employees.put(employee.getId(),employee);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/{employeeID}")
+    public ResponseEntity update(@PathVariable int employeeID,@RequestBody Employee employee){
+
+        if(!this.employees.containsKey(employeeID)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        this.employees.remove(employeeID);
+        employee.setId(employeeID);
+        this.employees.put(employeeID,employee);
+        return ResponseEntity.ok().body(employee);
     }
 }
