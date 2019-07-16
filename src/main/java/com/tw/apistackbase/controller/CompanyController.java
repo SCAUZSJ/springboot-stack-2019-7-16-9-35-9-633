@@ -86,5 +86,9 @@ public class CompanyController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+    @GetMapping("/{companyId}")
+    public ResponseEntity getbyId(@PathVariable int companyId) {
+        return ResponseEntity.ok().body(companies.get(companyId));
+    }
 
 }

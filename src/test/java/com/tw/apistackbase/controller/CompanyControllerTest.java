@@ -71,4 +71,16 @@ public class CompanyControllerTest {
     public void should_return_code_200_when_delete_success() throws Exception {
         this.mockMvc.perform(delete("/companies/5")).andExpect(status().isOk());
     }
+    @Test
+    public void should_return_code_200_when_delete_fail() throws Exception {
+        this.mockMvc.perform(delete("/companies/100")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void should_return_company_when_get_by_id() throws Exception {
+
+        String content = this.mockMvc.perform(get("/companies/1")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JSONObject obj = new JSONObject(content);
+        Assertions.assertEquals("A",obj.get("companyName"));
+    }
 }
