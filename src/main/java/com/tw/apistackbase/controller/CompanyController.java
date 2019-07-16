@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/companies")
-public class companiesController {
+public class CompanyController {
 
 
 }
