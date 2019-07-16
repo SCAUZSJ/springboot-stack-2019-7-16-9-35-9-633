@@ -78,5 +78,13 @@ public class CompanyController {
         this.companies.put(companyId,company);
         return ResponseEntity.ok().body(company);
     }
+    @DeleteMapping("/{companyId}")
+    public ResponseEntity delete(@PathVariable int companyId){
+        if(this.companies.containsKey(companyId)){
+            this.companies.remove(companyId);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 
 }

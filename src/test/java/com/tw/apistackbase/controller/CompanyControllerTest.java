@@ -67,4 +67,8 @@ public class CompanyControllerTest {
         this.mockMvc.perform(put("/companies/20").contentType(MediaType.APPLICATION_JSON_UTF8).
                 content(objectJson)).andExpect(status().isBadRequest());
     }
+    @Test
+    public void should_return_code_200_when_delete_success() throws Exception {
+        this.mockMvc.perform(delete("/companies/5")).andExpect(status().isOk());
+    }
 }
