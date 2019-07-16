@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -19,11 +21,11 @@ public class EmployeeController {
     EmployeeController(){
         //init data
         this.employees.put(1,new Employee(1,"A",20,"male",6000));
-        this.employees.put(3,new Employee(1,"A",20,"male",6000));
-        this.employees.put(6,new Employee(1,"A",20,"male",6000));
-        this.employees.put(7,new Employee(1,"A",20,"male",6000));
-        this.employees.put(8,new Employee(1,"A",20,"male",6000));
-        this.employees.put(9,new Employee(1,"A",20,"male",6000));
+        this.employees.put(3,new Employee(3,"B",20,"female",7000));
+        this.employees.put(6,new Employee(6,"C",20,"female",5000));
+        this.employees.put(7,new Employee(7,"D",20,"female",1000));
+        this.employees.put(8,new Employee(8,"E",20,"male",2000));
+        this.employees.put(9,new Employee(9,"F",20,"male",3000));
     }
 
     @GetMapping
@@ -56,9 +58,11 @@ public class EmployeeController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-//    @GetMapping
-//    public ResponseEntity getbyId() {
-////        return ResponseEntity.ok().body(employees.get());
-//    }
+    @GetMapping("/{employeeID}")
+    public ResponseEntity getbyId(@PathVariable int employeeID) {
+        return ResponseEntity.ok().body(employees.get(employeeID));
+    }
+
+
 
 }

@@ -1,9 +1,9 @@
 package com.tw.apistackbase.controller;
 
 import com.tw.apistackbase.entity.Employee;
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
+
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -52,7 +52,7 @@ public class EmployeeControllerTest {
         String objectJson = new org.json.JSONObject(employee).toString();
         String content = this.mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON_UTF8).
                 content(objectJson)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        JSONObject obj = (JSONObject) JSONValue.parse(content);
+        JSONObject obj = new JSONObject(content);
         Assertions.assertEquals(8000,obj.get("salary"));
     }
     @Test
@@ -73,6 +73,18 @@ public class EmployeeControllerTest {
     public void should_return_code_200_when_delete_fail() throws Exception {
         this.mockMvc.perform(delete("/employees/4")).andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void should_return_employee_when_get_by_id() throws Exception {
+
+        String content = this.mockMvc.perform(get("/employees/1")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        org.json.JSONObject obj = new org.json.JSONObject(content);
+        Assertions.assertEquals("A",obj.get("name"));
+    }
+
+
+
+
 
 
 }
