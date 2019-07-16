@@ -1,10 +1,9 @@
 package com.tw.apistackbase.controller;
 
 import com.tw.apistackbase.entity.Employee;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,5 +20,11 @@ public class EmployeeController {
     public ResponseEntity getAll() {
         this.employees.put(1,new Employee(1,"A",20,"male",6000));
         return ResponseEntity.ok().body(employees.values().toArray());
+    }
+
+    @PostMapping
+    public ResponseEntity create(@RequestBody Employee employee){
+        this.employees.put(employee.getId(),employee);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
