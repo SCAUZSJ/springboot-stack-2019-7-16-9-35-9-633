@@ -19,6 +19,11 @@ public class EmployeeController {
     EmployeeController(){
         //init data
         this.employees.put(1,new Employee(1,"A",20,"male",6000));
+        this.employees.put(3,new Employee(1,"A",20,"male",6000));
+        this.employees.put(6,new Employee(1,"A",20,"male",6000));
+        this.employees.put(7,new Employee(1,"A",20,"male",6000));
+        this.employees.put(8,new Employee(1,"A",20,"male",6000));
+        this.employees.put(9,new Employee(1,"A",20,"male",6000));
     }
 
     @GetMapping
@@ -50,7 +55,10 @@ public class EmployeeController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
     }
+//    @GetMapping
+//    public ResponseEntity getbyId() {
+////        return ResponseEntity.ok().body(employees.get());
+//    }
 
 }

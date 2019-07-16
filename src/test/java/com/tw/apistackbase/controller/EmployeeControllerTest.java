@@ -1,5 +1,6 @@
 package com.tw.apistackbase.controller;
 
+import com.tw.apistackbase.entity.Employee;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 import org.json.JSONArray;
@@ -39,26 +40,16 @@ public class EmployeeControllerTest {
 
     @Test
     public void should_return_code_201_when_post() throws Exception {
-
-        Map<String, String> map = new HashMap<>();
-        map.put("id","2");
-        map.put("name","B");
-        map.put("age","18");
-        map.put("gender","male");
-        map.put("salary","6000");
-        String objectJson = JSONObject.toJSONString(map);
+        Employee employee = new Employee(2,"B",18,"male",6000);
+        String objectJson = new org.json.JSONObject(employee).toString();
         this.mockMvc.perform(post("/employees").contentType(MediaType.APPLICATION_JSON_UTF8).
                 content(objectJson)).andExpect(status().isCreated());
     }
 
     @Test
     public void should_return_new_object_info_when_put_success() throws Exception {
-        Map<String, String> map = new HashMap<>();
-        map.put("name","A");
-        map.put("age","20");
-        map.put("gender","male");
-        map.put("salary","8000");
-        String objectJson = JSONObject.toJSONString(map);
+        Employee employee = new Employee(1,"A",20,"male",8000);
+        String objectJson = new org.json.JSONObject(employee).toString();
         String content = this.mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON_UTF8).
                 content(objectJson)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         JSONObject obj = (JSONObject) JSONValue.parse(content);
@@ -66,24 +57,22 @@ public class EmployeeControllerTest {
     }
     @Test
     public void should_return_new_object_info_when_put_fail() throws Exception {
-        Map<String, String> map = new HashMap<>();
-        map.put("name","C");
-        map.put("age","20");
-        map.put("gender","male");
-        map.put("salary","6000");
-        String objectJson = JSONObject.toJSONString(map);
-        this.mockMvc.perform(put("/employees/3").contentType(MediaType.APPLICATION_JSON_UTF8).
+
+        Employee employee = new Employee(5,"C",20,"male",8000);
+        String objectJson = new org.json.JSONObject(employee).toString();
+        this.mockMvc.perform(put("/employees/5").contentType(MediaType.APPLICATION_JSON_UTF8).
                 content(objectJson)).andExpect(status().isBadRequest());
     }
     @Test
     public void should_return_code_200_when_delete_success() throws Exception {
         //success
-        this.mockMvc.perform(delete("/employees/1")).andExpect(status().isOk());
+        this.mockMvc.perform(delete("/employees/6")).andExpect(status().isOk());
     }
 
     @Test
     public void should_return_code_200_when_delete_fail() throws Exception {
-        this.mockMvc.perform(delete("/employees/2")).andExpect(status().isBadRequest());
+        this.mockMvc.perform(delete("/employees/4")).andExpect(status().isBadRequest());
     }
+
 
 }
