@@ -2,7 +2,10 @@ package com.tw.apistackbase.controller;
 
 import com.tw.apistackbase.entity.Company;
 import com.tw.apistackbase.entity.Employee;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
@@ -27,6 +30,38 @@ public class CompanyController {
         this.companies.put("E",new Company("E",2, employees));
         this.companies.put("F",new Company("F",2, employees));
 
+    }
+
+    private List<Company> convertMapToList(){
+        List<Company> companieList = new ArrayList<>();
+        for (Company company: companies.values()) {
+            companieList.add(company);
+        }
+        return companieList;
+    }
+
+    @GetMapping
+    public ResponseEntity getAll(@RequestParam(required = false)  String gender,
+                                 @RequestParam(required = false) String page ,
+                                 @RequestParam(required = false) String pageSize) {
+        List<Company> result = convertMapToList();
+//        if(gender!=null){
+//            result = result.stream().filter((obj)->{
+//                return obj.getGender().equals(gender);
+//            }).collect(Collectors.toList());
+//        }
+//        if(page!=null&&pageSize!=null){
+//            List<Employee> employeeList = new ArrayList<>();
+//            int index=(Integer.parseInt(page)-1)*Integer.parseInt(pageSize);
+//            if(index>=result.size()){
+//                result = null;
+//            }
+//            for(int i=index;i<Math.min(index+Integer.parseInt(pageSize),result.size()-1);i++){
+//                employeeList.add((Employee) result.get(i));
+//            }
+//            result = employeeList;
+//        }
+        return ResponseEntity.ok().body(result);
     }
 
 }
