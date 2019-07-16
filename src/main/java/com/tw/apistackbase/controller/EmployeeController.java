@@ -43,4 +43,14 @@ public class EmployeeController {
         this.employees.put(employeeID,employee);
         return ResponseEntity.ok().body(employee);
     }
+    @DeleteMapping("/{employeeID}")
+    public ResponseEntity delete(@PathVariable int employeeID){
+        if(this.employees.containsKey(employeeID)){
+            this.employees.remove(employeeID);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+    }
+
 }

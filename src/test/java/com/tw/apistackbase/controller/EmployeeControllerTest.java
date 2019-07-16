@@ -75,5 +75,15 @@ public class EmployeeControllerTest {
         this.mockMvc.perform(put("/employees/3").contentType(MediaType.APPLICATION_JSON_UTF8).
                 content(objectJson)).andExpect(status().isBadRequest());
     }
+    @Test
+    public void should_return_code_200_when_delete_success() throws Exception {
+        //success
+        this.mockMvc.perform(delete("/employees/1")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_return_code_200_when_delete_fail() throws Exception {
+        this.mockMvc.perform(delete("/employees/2")).andExpect(status().isBadRequest());
+    }
 
 }
